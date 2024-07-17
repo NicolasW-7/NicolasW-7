@@ -1,5 +1,5 @@
 # 💫 About Me:
-👋 Bonjour je m'appelle Nicolas <br>🌱 Je suis actuellement en formation d'administrateur d'infrastructure sécurisée<br>🛡️ Je travaille en ce moment sur la mise en production de Vaultwarden <br>👀 En ce moment je découvre Ansible <br>🤖 Apprend les bases de scritping bash/shel et de la réplication <br> 
+👋 Bonjour je m'appelle Nicolas <br>🌱 Je suis actuellement en formation d'administrateur d'infrastructure sécurisée<br>🛡️ Je travaille en ce moment sur la mise en production de Vaultwarden <br>👀 En ce moment je découvre Ansible <br>🤖 Apprend les bases de scritping bash/shell et de la réplication <br> 
 
 # About my GitHub 
 
