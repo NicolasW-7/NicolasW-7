@@ -360,3 +360,99 @@ tar -xJvf archive_name.tar.xz -C /tmp/extract_dir
 ls -lh /tmp/extract_dir
 tree /tmp/extract_dir
 ```
+
+# Option 3 
+
+# Vérification d’intégrité avant et après archivage avec SHA256
+
+Cette procédure permet de s’assurer que les fichiers (vidéos, documents, données sensibles) ne sont pas modifiés pendant la création d’une archive `.tar`.
+
+---
+
+## 1️⃣ Générer les hash SHA256 avant l’archivage
+
+1. Ouvrir un terminal et se placer à la racine du dossier à archiver :
+
+```bash
+cd /chemin/vers/dossier_a_archiver
+```
+
+2. Calculer le hash SHA256 de tous les fichiers et enregistrer dans un fichier `hashes_before.txt` :
+
+```bash
+find . -type f -exec sha256sum {} \; > ~/hashes_before.txt
+```
+
+* `find . -type f` → liste tous les fichiers récursivement depuis la racine.
+* `sha256sum` → génère le hash SHA256.
+* `>` → redirige le résultat vers un fichier.
+
+---
+
+## 2️⃣ Créer l’archive tar
+
+### Option gzip (.tar.gz)
+
+```bash
+tar -czvf archive_name.tar.gz .
+```
+
+### Option bzip2 (.tar.bz2)
+
+```bash
+tar -cjvf archive_name.tar.bz2 .
+```
+
+### Option xz (.tar.xz)
+
+```bash
+tar -cJvf archive_name.tar.xz .
+```
+
+> ⚠️ Assurez-vous que le processus `tar` se termine correctement avant de continuer.
+
+---
+
+## 3️⃣ Extraire l’archive (pour vérification)
+
+1. Créer un dossier temporaire pour l’extraction :
+
+```bash
+mkdir -p /tmp/archive_extract
+```
+
+2. Extraire l’archive :
+
+```bash
+tar -xzvf archive_name.tar.gz -C /tmp/archive_extract
+# ou pour bzip2 : tar -xjvf archive_name.tar.bz2 -C /tmp/archive_extract
+# ou pour xz    : tar -xJvf archive_name.tar.xz -C /tmp/archive_extract
+```
+
+---
+
+## 4️⃣ Générer les hash SHA256 après extraction
+
+```bash
+cd /tmp/archive_extract
+find . -type f -exec sha256sum {} \; > ~/hashes_after.txt
+```
+
+---
+
+## 5️⃣ Comparer les hash
+
+```bash
+diff ~/hashes_before.txt ~/hashes_after.txt
+```
+
+* Si aucune différence n’apparaît → tous les fichiers sont intacts.
+* Si des différences sont détectées → certains fichiers ont été modifiés ou corrompus.
+
+---
+
+## ✅ Astuces
+
+* Toujours stocker le fichier `hashes_before.txt` pour audit futur.
+* Pour de très gros volumes, utiliser `sha256sum` avec `parallel` pour accélérer le calcul.
+* Peut être combiné avec un script automatique pour archivage et vérification intégrale.
