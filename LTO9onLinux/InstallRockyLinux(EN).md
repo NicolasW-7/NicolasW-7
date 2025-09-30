@@ -354,3 +354,96 @@ tar -xJvf archive_name.tar.xz -C /tmp/extract_dir
 ls -lh /tmp/extract_dir
 tree /tmp/extract_dir
 ```
+# Integrity Verification Before and After Archiving with SHA256
+
+This procedure ensures that files (videos, documents, sensitive data) are not altered during the creation of a `.tar` archive.
+
+---
+
+## 1️⃣ Generate SHA256 hashes before archiving
+
+1. Open a terminal and navigate to the root of the folder to archive:
+
+```bash
+cd /path/to/folder_to_archive
+```
+
+2. Compute the SHA256 hash of all files and save it to `hashes_before.txt`:
+
+```bash
+find . -type f -exec sha256sum {} \; > ~/hashes_before.txt
+```
+
+* `find . -type f` → recursively lists all files from the root folder.
+* `sha256sum` → generates the SHA256 hash.
+* `>` → redirects the output to a file.
+
+---
+
+## 2️⃣ Create the tar archive
+
+### Gzip option (.tar.gz)
+
+```bash
+tar -czvf archive_name.tar.gz .
+```
+
+### Bzip2 option (.tar.bz2)
+
+```bash
+tar -cjvf archive_name.tar.bz2 .
+```
+
+### XZ option (.tar.xz)
+
+```bash
+tar -cJvf archive_name.tar.xz .
+```
+
+> ⚠️ Make sure the `tar` process completes successfully before proceeding.
+
+---
+
+## 3️⃣ Extract the archive (for verification)
+
+1. Create a temporary folder for extraction:
+
+```bash
+mkdir -p /tmp/archive_extract
+```
+
+2. Extract the archive:
+
+```bash
+tar -xzvf archive_name.tar.gz -C /tmp/archive_extract
+# or for bzip2: tar -xjvf archive_name.tar.bz2 -C /tmp/archive_extract
+# or for xz:    tar -xJvf archive_name.tar.xz -C /tmp/archive_extract
+```
+
+---
+
+## 4️⃣ Generate SHA256 hashes after extraction
+
+```bash
+cd /tmp/archive_extract
+find . -type f -exec sha256sum {} \; > ~/hashes_after.txt
+```
+
+---
+
+## 5️⃣ Compare the hashes
+
+```bash
+diff ~/hashes_before.txt ~/hashes_after.txt
+```
+
+* If no differences appear → all files are intact.
+* If differences are detected → some files have been modified or corrupted.
+
+---
+
+## ✅ Tips
+
+* Always keep `hashes_before.txt` for future audits.
+* For very large datasets, use `sha256sum` with `parallel` to speed up the computation.
+* This procedure can be combined with an automated script for full archival and integrity verification.
