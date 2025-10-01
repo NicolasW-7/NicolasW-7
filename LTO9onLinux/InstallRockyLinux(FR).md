@@ -456,3 +456,10 @@ diff ~/hashes_before.txt ~/hashes_after.txt
 * Toujours stocker le fichier `hashes_before.txt` pour audit futur.
 * Pour de très gros volumes, utiliser `sha256sum` avec `parallel` pour accélérer le calcul.
 * Peut être combiné avec un script automatique pour archivage et vérification intégrale.
+
+# Option 4
+
+## Commande d'eject de bande
+```
+mt -f /dev/nst0 eject
+```
