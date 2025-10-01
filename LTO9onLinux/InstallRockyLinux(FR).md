@@ -94,7 +94,9 @@ ltfsck /dev/st0
 3. Démonter la bande proprement :
 
 ```bash
-umount /mnt/ltfs
+sync
+ltfs -o devname=/dev/st0 -o unmount /mnt/ltfs
+mount | grep ltfs
 ```
 
 ---
