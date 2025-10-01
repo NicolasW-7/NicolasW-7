@@ -461,7 +461,10 @@ diff ~/hashes_before.txt ~/hashes_after.txt
 
 # Option 4
 
-## Commande d'eject de bande
+## Reformater la bande pour repartir à zéro
+
+Si tu n’as pas besoin des données actuelles ou qu’elles sont déjà perdues, tu peux refaire un mkltfs :
 ```
-mt -f /dev/nst0 eject
+mkltfs --device=/dev/st0 -f -n IMT00A -s IMT00A
 ```
+Cela remet la bande “propre” et prête pour LTFS, exactement comme tu l’as déjà fait.
